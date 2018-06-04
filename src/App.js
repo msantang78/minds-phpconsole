@@ -10,7 +10,11 @@ class App extends Component {
   state = {
     code: '',
     persistedCode: '',
-    result: null
+    result: null,
+    lint: {
+      pass: null,
+      output: []
+    },
   }
 
   persistTimer$ = null;
@@ -20,7 +24,7 @@ class App extends Component {
   }
 
   onCodeChange = (code) => {
-    this.setState({ code });
+    this.setState({ code, lint: { pass: null, output: [] } });
 
     if (this.persistTimer$) {
       clearTimeout(this.persistTimer$);
@@ -28,7 +32,8 @@ class App extends Component {
 
     this.persistTimer$ = setTimeout(() => {
       this.save();
-    }, 1000);
+      this.lint();
+    }, 350);
   }
 
   onExecute = async () => {
@@ -49,7 +54,8 @@ class App extends Component {
 
   load() {
     try {
-      this.setState({ persistedCode: atob(window.localStorage.getItem('persistedCode') || '') })
+      this.setState({ persistedCode: atob(window.localStorage.getItem('persistedCode') || '') });
+      this.lint();
     } catch (e) {
       console.error(e);
     }
@@ -57,6 +63,11 @@ class App extends Component {
 
   save() {
     window.localStorage.setItem('persistedCode', btoa(this.state.code));
+  }
+
+  async lint() {
+    const lint = await execute.lint(this.state.code);
+    this.setState({ lint });
   }
 
   render() {
@@ -75,8 +86,31 @@ class App extends Component {
           <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
             <div class="text-sm lg:flex-grow">
             </div>
+            { this.state.lint.output.length > 0 &&
+              <div className="m-2 font-sans text-xs text-white">
+                {this.state.lint.output[0]}
+              </div>
+            }
+            <div class="m-2">
+              <div
+                className={[
+                  "border border-white rounded-full h-3 w-3 flex items-center justify-center",
+                  this.state.lint.pass === true && 'bg-green' : '',
+                  this.state.lint.pass === false && 'bg-red' : '',
+                ].join(' ')}
+                title={this.state.lint.output.join('\n')}
+              ></div>
+            </div>
             <div>
-              <button onClick={this.onExecute} class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Execute</button>
+              <button
+                onClick={this.onExecute}
+                disabled={this.state.lint.pass === false}
+                className={[
+                  "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white mt-4 lg:mt-0",
+                  this.state.lint.pass !== false ? 'hover:border-transparent hover:text-teal hover:bg-white' : '',
+                  this.state.lint.pass === false ? 'opacity-50 cursor-not-allowed' : '',
+                ].join(' ')}
+              >Execute</button>
             </div>
           </div>
         </nav>
