@@ -2,11 +2,13 @@
 
 ## Install
 
-clone to a folder inside the minds proyect
+clone to a folder inside the minds project
 
 git clone git@github.com:msantang78/minds-phpconsole.git console
 
-open the fpm-php port 8000 and add the volume editing the docker file
+## Configure
+
+open port 8000 and add the volume editing in your php-fpm container in Mind's docker-compose.yml:
  ```
  ports:
     - "8000:8000"
@@ -15,7 +17,8 @@ open the fpm-php port 8000 and add the volume editing the docker file
     - "./console/:/var/www/Minds/console"
 ```
 
-## running
+## Run
+There's a pre-compiled version already included, so you only need to do:
 ```
 docker-compose exec php-fpm sh
 cd ../Minds/console/build
