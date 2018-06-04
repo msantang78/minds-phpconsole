@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   onCodeChange = (code) => {
-    console.log(code);
     this.setState({ code });
 
     if (this.persistTimer$) {
