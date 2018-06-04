@@ -7,9 +7,9 @@ import Editor from './editor/Editor';
 
 class App extends Component {
 
-  code = '';
-
   state = {
+    code: '',
+    persistedCode: '',
     result: null
   }
 
@@ -20,7 +20,8 @@ class App extends Component {
   }
 
   onCodeChange = (code) => {
-    this.code = code;
+    console.log(code);
+    this.setState({ code });
 
     if (this.persistTimer$) {
       clearTimeout(this.persistTimer$);
@@ -32,8 +33,9 @@ class App extends Component {
   }
 
   onExecute = async () => {
+    this.save();
     console.log('Execute');
-    const result = await execute.run(this.code);
+    const result = await execute.run(this.state.code);
     this.setState({result});
     console.log(result);
   }
@@ -48,14 +50,14 @@ class App extends Component {
 
   load() {
     try {
-      this.code = atob(window.localStorage.getItem('persistedCode') || '');
+      this.setState({ persistedCode: atob(window.localStorage.getItem('persistedCode') || '') })
     } catch (e) {
       console.error(e);
     }
   }
 
   save() {
-    window.localStorage.setItem('persistedCode', btoa(this.code));
+    window.localStorage.setItem('persistedCode', btoa(this.state.code));
   }
 
   render() {
@@ -83,7 +85,7 @@ class App extends Component {
         <div className="">
           <Editor
             onChange={this.onCodeChange}
-            defaultValue={this.code}
+            defaultValue={this.state.persistedCode}
           />
         </div>
 

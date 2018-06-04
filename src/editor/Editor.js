@@ -15,7 +15,10 @@ class Editor extends PureComponent {
   }
 
   componentDidMount() {
-    this.refs.aceEditor.editor.getSession().setMode({path:"ace/mode/php", inline:true});
+    const session = this.refs.aceEditor.editor.getSession();
+
+    session.setMode({path:"ace/mode/php", inline:true});
+    session.setValue(this.props.defaultValue || '');
   }
 
   render() {
@@ -24,7 +27,6 @@ class Editor extends PureComponent {
         ref="aceEditor"
         mode="php"
         theme="dracula"
-        defaultValue={this.props.defaultValue || ''}
         width="100%"
         showPrintMargin={false}
         onChange={this.onChange}
