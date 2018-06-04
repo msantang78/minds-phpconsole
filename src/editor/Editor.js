@@ -24,7 +24,7 @@ class Editor extends PureComponent {
         ref="aceEditor"
         mode="php"
         theme="dracula"
-        defaultValue=""
+        defaultValue={this.props.defaultValue || ''}
         width="100%"
         showPrintMargin={false}
         onChange={this.onChange}

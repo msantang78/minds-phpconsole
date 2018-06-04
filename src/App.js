@@ -13,8 +13,22 @@ class App extends Component {
     result: null
   }
 
+  persistTimer$ = null;
+
+  componentWillMount() {
+    this.load();
+  }
+
   onCodeChange = (code) => {
     this.code = code;
+
+    if (this.persistTimer$) {
+      clearTimeout(this.persistTimer$);
+    }
+
+    this.persistTimer$ = setTimeout(() => {
+      this.save();
+    }, 1000);
   }
 
   onExecute = async () => {
@@ -22,6 +36,26 @@ class App extends Component {
     const result = await execute.run(this.code);
     this.setState({result});
     console.log(result);
+  }
+
+  componentWillUnmount() {
+    if (this.persistTimer$) {
+      clearTimeout(this.persistTimer$);
+    }
+
+    this.save();
+  }
+
+  load() {
+    try {
+      this.code = atob(window.localStorage.getItem('persistedCode') || '');
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  save() {
+    window.localStorage.setItem('persistedCode', btoa(this.code));
   }
 
   render() {
@@ -47,7 +81,10 @@ class App extends Component {
         </nav>
 
         <div className="">
-          <Editor onChange={this.onCodeChange}/>
+          <Editor
+            onChange={this.onCodeChange}
+            defaultValue={this.code}
+          />
         </div>
 
         {this.state.result && <div className="m-2 p-2 bg-blue-darker shadow-lg text-grey-lightest text-xs font-mono">
