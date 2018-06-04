@@ -20,6 +20,7 @@ $router = new MindsConsole\Core\Router(new MindsConsole\Core\Request);
 $router
     ->define('', 'get', ['HomeController', 'index']) // home route /
     ->define('api/execute', 'post', ['ExecuteController', 'run'])
+    ->define('api/lint', 'post', ['ExecuteController', 'lint'])
     ->dispatch();
 
 
