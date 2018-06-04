@@ -14,7 +14,7 @@ open the fpm-php port 8000 and add the volume editing the docker file
     - "./console/:/var/www/Minds/console"
 
 
-#running
+## running
 docker-compose exec php-fpm sh
 cd ../Minds/console/build
 php -S 0.0.0.0:8000 ../server.php
