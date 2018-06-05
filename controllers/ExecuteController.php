@@ -37,6 +37,12 @@ class ExecuteController
 		$output = ob_get_contents();
 		ob_end_clean();
 
+		$response['time'] = round(($console_execute_end - $console_execute_start) * 1000);
+		$response['output'] = $output;
+		$response['output_size'] = strlen($output);
+		$response['memory'] = memory_get_usage(true);
+		$response['memory_peak'] = memory_get_peak_usage(true);
+
 		if ($estatus === false || $estatus instanceof \ParseError || $estatus instanceof \Error || $estatus instanceof \Exception) {
 			if (!$estatus) {
 				$response['error'] = error_get_last();
@@ -48,12 +54,6 @@ class ExecuteController
 			}
 		}
 
-		$response['time'] = round(($console_execute_end - $console_execute_start) * 1000);
-		$response['output'] = $output;
-		$response['output_size'] = strlen($output);
-		$response['memory'] = memory_get_usage(true);
-		$response['memory_peak'] = memory_get_peak_usage(true);
-
 		return json_encode($response);
 	}
 
@@ -64,17 +64,26 @@ class ExecuteController
 		$response['file'], $matches);
 		if ($matched) {
 			$response['file'] = 'the code below';
+		} else {
+			$this->getErrorLines($response);
 		}
 	}
 
-	function betterEval($code) {
-		$tmp = tmpfile ();
-		$tmpf = stream_get_meta_data ( $tmp );
-		$tmpf = $tmpf ['uri'];
-		fwrite ( $tmp, '<?php'.PHP_EOL.$code );
-		$ret = include ($tmpf);
-		fclose ( $tmp );
-		return $ret;
+	protected function getErrorLines(&$response) {
+		$file = new \SplFileObject($response['file']);
+		$contents = '';
+		if (!$file->eof()) {
+			$file->seek($response['line']-5);
+
+			for($i = 0; $i < 10 ; $i++) {
+				if ($i == 4) $contents .= '<em class="bg-red text-white">';
+				$contents.= ($response['line'] -4 + $i) ."\t<b>". $file->current().'</b>';
+				if ($i == 4) $contents .= '</em>';
+				$file->next();
+			}
+		}
+
+		$response['section'] = $contents;
 	}
 
 	public function lint()
