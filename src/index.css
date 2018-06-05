@@ -6,5 +6,5 @@ body {
 
 pre {
   word-break: break-all;
-  white-space: pre-line;
+  white-space: pre-wrap;
 }
