@@ -13,6 +13,7 @@ class App extends Component {
   state = {
     code: '',
     persistedCode: '',
+    running: false,
     result: null,
     lint: {
       pass: null,
@@ -42,9 +43,14 @@ class App extends Component {
   onExecute = async () => {
     this.save();
     console.log('Execute');
-    const result = await execute.run(this.state.code);
-    this.setState({result});
-    console.log(result);
+    this.setState({running: true});
+    let result;
+    try {
+      result = await execute.run(this.state.code);
+    } catch(e) {
+      console.log(e);
+    }
+    this.setState({result, running: false});
   }
 
   componentWillUnmount() {
@@ -76,7 +82,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header lint={this.state.lint} onExecute={this.onExecute}/>
+        <Header lint={this.state.lint} onExecute={this.onExecute} running={this.state.running}/>
 
         {this.state.result && this.state.result.error && <CodeError result={this.state.result}/>}
 

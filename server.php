@@ -11,7 +11,6 @@ if ($uri !== '/' && file_exists(__DIR__.'/build/'.$uri)) {
     return false;
 }
 
-
 /**
  * Create router, define rutes and dispatch the request
  */
@@ -22,6 +21,3 @@ $router
     ->define('api/execute', 'post', ['ExecuteController', 'run'])
     ->define('api/lint', 'post', ['ExecuteController', 'lint'])
     ->dispatch();
-
-
-

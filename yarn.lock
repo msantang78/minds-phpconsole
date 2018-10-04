@@ -6557,6 +6557,10 @@ table@^4.0.1:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
+tailwindcss-spinner@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-spinner/-/tailwindcss-spinner-0.2.0.tgz#587c94f15b2ccc5b8bef8bea51a935435c3c2ff6"
+
 tailwindcss@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-0.5.3.tgz#5444f85ab5e68a37c2bf13bc4ac097a7ee05321d"

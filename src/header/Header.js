@@ -13,11 +13,13 @@ class Header extends PureComponent {
   render() {
     const lint = this.props.lint;
 
+    const disabled = lint.pass === false || this.props.running;
+
     return (
-      <nav className="flex items-center justify-between flex-wrap bg-indigo-light p-2">
-        <div className="flex items-center flex-no-shrink text-white mr-6">
+      <nav className="flex items-center justify-between flex-wrap bg-grey-lightest p-2 shadow">
+        <div className="flex items-center flex-no-shrink text-grey-dark mr-6">
           <img className="fill-current h-12 w-12 mr-2" src="/Minds_logo.svg"/>
-          <span className="font-semibold text-xl tracking-tight">Minds PHP Console</span>
+          <span className="font-hairline text-xl tracking-wide">MINDS <span className="font-medium">PHP</span> CONSOLE</span>
         </div>
         <div className="block lg:hidden">
           <button className="flex items-center px-3 py-2 border rounded text-teal-lighter border-teal-light hover:text-white hover:border-white">
@@ -44,12 +46,13 @@ class Header extends PureComponent {
           <div>
             <button
               onClick={this.onExecute}
-              disabled={lint.pass === false}
+              disabled={disabled}
               className={
-                "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white mt-4 lg:mt-0"+
-                (lint.pass ? ' hover:border-transparent hover:text-teal hover:bg-white' : ' opacity-50 cursor-not-allowed')
+                "inline-block text-sm px-4 py-2 leading-none border rounded text-blue border-blue mt-4 lg:mt-0"+
+                (disabled ? ' opacity-50 cursor-not-allowed' : ' hover:border-transparent hover:text-white hover:bg-blue-light')+
+                (this.props.running ? ' spinner' : '')
               }
-            >Execute</button>
+            >Run</button>
           </div>
         </div>
       </nav>
