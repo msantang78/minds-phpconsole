@@ -1,5 +1,13 @@
+
+/**
+ * Execute Service
+ */
 class ExecuteService {
 
+  /**
+   * Form encode
+   * @param {object} obj
+   */
   formEncode(obj) {
     const str = [];
     for(var p in obj)
@@ -7,14 +15,22 @@ class ExecuteService {
     return str.join("&");
   }
 
-  run(code) {
+  /**
+   * Run
+   */
+  run(code, type, subtype, params) {
+    params = JSON.stringify(params);
     return fetch('/api/execute', {
       method: 'post',
       headers: { "Content-type": "application/x-www-form-urlencoded"},
-        body: this.formEncode({code})
+        body: this.formEncode({code, type, subtype, params})
     }).then(result => result.json());
   }
 
+  /**
+   * Lint code
+   * @param {string} code
+   */
   lint(code) {
     return fetch('/api/lint', {
       method: 'post',

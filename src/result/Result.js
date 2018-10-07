@@ -1,5 +1,25 @@
 import React, { PureComponent } from 'react';
 
+const TableRow = ({row}) => (
+  <tr className="hover:bg-indigo">
+    {Object.keys(row).map(key => <td key={key} className="text-indigo-lightest">{row[key]}</td>)}
+  </tr>
+)
+
+const TableRowTitle = ({row}) => (
+  <tr className="bg-indigo-dark ">
+    {Object.keys(row).map(key => <th className="text-sm py-1" key={key}>{key}</th>)}
+  </tr>
+)
+
+const Table = ({data}) => (
+  <table className="table-auto w-full bg-indigo-darker">
+    <TableRowTitle row={data[0]}/>
+    {data.map(row => <TableRow row={row}/>)}
+  </table>
+)
+
+
 /**
  *  Execution Result Component
  */
@@ -11,6 +31,13 @@ class Result extends PureComponent {
 
   render() {
     const result = this.props.result;
+    let output = null;
+
+    if (result.output) {
+      output = this.props.tab.type === 'ace/mode/php' ?
+        <pre>{result.output}</pre> :
+        <Table data={result.output}/>
+    }
 
     return (
       <div className="m-2 p-2 bg-blue-darker shadow-lg text-grey-lightest text-xs font-mono">
@@ -27,7 +54,7 @@ class Result extends PureComponent {
         </div>
         <div>
           OUTPUT:
-          <pre>{result.output}</pre>
+          {output}
         </div>
       </div>
     );

@@ -42,6 +42,7 @@ class Router
                 return;
             }
         } catch(\Exception $e) {
+            error_log($e);
             http_response_code (500);
             echo 'Oops an error has occurred in the application';
             return;
