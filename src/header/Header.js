@@ -32,7 +32,7 @@ class Header extends PureComponent {
         <li className="mr-1 cursor-pointer" onClick={() => this.props.onNewTab('sql')}>
           <a className="bg-grey-lightest inline-block py-2 px-2 text-green hover:text-green-darker font-semibold  border-l border-t border-r rounded-t" >+</a>
         </li>
-        <li className="mr-1 cursor-pointer" onClick={() => this.props.onNewTab('sql')}>
+        <li className="mr-1 cursor-pointer" onClick={() => this.props.onNewTab('php')}>
           <a className="bg-grey-lightest inline-block py-2 px-2 text-blue hover:text-blue-darker font-semibold  border-l border-t border-r rounded-t" >+</a>
         </li>
         </ul>
