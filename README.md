@@ -30,14 +30,6 @@ run:
 
 ## Without Docker
 
-### Installing
-
-Install dependecies and build
-```
-yarn install
-yarn build
-```
-
 ### Run
 ```
 docker-compose exec php-fpm sh
@@ -46,6 +38,12 @@ php -S 0.0.0.0:8000 ../server.php
 ```
 
 ### Development mode
+
+Install dependecies and build
+```
+yarn install
+```
+
 You can run the react app in development mode using
 ```
 yarn start
