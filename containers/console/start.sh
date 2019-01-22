@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-cd /var/www/Minds/console
-
+cd /var/www/Minds/console/build
 echo "Starting console…"
-
-npm install && npm run build
-
-cd build && php -S 0.0.0.0:8000 ../server.php
+php -S 0.0.0.0:8000 ../server.php
